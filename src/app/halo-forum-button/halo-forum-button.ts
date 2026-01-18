@@ -28,9 +28,7 @@ export class HaloForumButton {
   baseColor = input<string>('#14345A');
   outlineColor = input<string>('#3FA2FC');
   textColor = input<string>('#FFFFFF');
-
-  // Size and spacing inputs\
-
+  
   /**
    * Button size options:
    * - 'sm' = 48px height

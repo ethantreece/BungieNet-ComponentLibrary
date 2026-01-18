@@ -1,4 +1,4 @@
-<button (click)="onClick()" [disabled]="disabled()">
+<button (click)="onClick()" [disabled]="disabled()" animate.enter="enter-animation">
   <span class="halo-button-container" aria-hidden="true">
 
     <!-- left -->
@@ -9,7 +9,7 @@
     </svg>
 
     <!-- middle -->
-    <svg class="middle" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 424 221" preserveAspectRatio="none">
+    <svg class="middle" animate.enter="enter-animation" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 424 221" preserveAspectRatio="none">
       <polygon fill="var(--base-color)" points="0,185 0,37 209,36 227,55 327,55 345,37 424,36 424,185 184,185 169,170 80,170 66,185 0,185" />
       <polygon fill="var(--outline-color)" points="66,185 80,170 169,170 184,185 66,185" />
       <polygon fill="var(--outline-color)" points="0,190 0,185 66,185 184,185 424,185 424,190 0,190" />
@@ -27,5 +27,5 @@
 
   </span>
 
-  <span class="label">{{text()}}</span>
+  <span class="label" animate.enter="enter-animation">{{text()}}</span>
 </button>
