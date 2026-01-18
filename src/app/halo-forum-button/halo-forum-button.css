@@ -1,0 +1,75 @@
+:root {
+  --button-height: 64px;
+  --edge-ratio-left: 121 / 221;
+  --edge-ratio-right: 125 / 221;
+}
+
+/* Button reset */
+button {
+  position: relative;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* Text overlay */
+button .label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 2.25em;
+
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+
+  font-family: 'HaloCE', sans-serif;
+}
+
+/* Hover polish */
+button:hover {
+  filter: brightness(1.15);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* SVG container */
+.halo-button-container {
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--button-height);
+  min-width: 180px;
+}
+
+/* Shared SVG rules */
+.halo-button-container svg {
+  height: 100%;
+  display: block;
+}
+
+/* Left edge */
+.halo-button-container .left {
+  aspect-ratio: var(--edge-ratio-left);
+  flex: 0 0 auto;
+}
+
+/* Middle stretch section */
+.halo-button-container .middle {
+  flex: 1 1 auto;
+  min-width: 40px;
+  margin-left: -1px;
+}
+
+/* Right edge */
+.halo-button-container .right {
+  aspect-ratio: var(--edge-ratio-right);
+  flex: 0 0 auto;
+  margin-left: -1px;
+}
