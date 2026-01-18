@@ -2,6 +2,7 @@
   --button-height: 64px;
   --edge-ratio-left: 121 / 221;
   --edge-ratio-right: 125 / 221;
+  --padding-x: 2.25em;
 }
 
 /* Button reset */
@@ -12,6 +13,14 @@ button {
   padding: 0;
   cursor: pointer;
   font: inherit;
+  transition: all 0.2s ease-in-out;
+}
+
+button:disabled,
+button.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 /* Text overlay */
@@ -20,23 +29,45 @@ button .label {
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 0 2.25em;
+  padding: 0 var(--padding-x);
 
-  color: white;
+  color: var(--text-color);
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   font-family: 'HaloCE', sans-serif;
 }
 
+/* Icon styling */
+button .icon-left,
+button .icon-right {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  font-size: 1.2em;
+}
+
+button .icon-left {
+  left: var(--padding-x);
+}
+
+button .icon-right {
+  right: var(--padding-x);
+}
+
 /* Hover polish */
-button:hover {
+button:not(:disabled):not(.disabled):hover {
   filter: brightness(1.15);
 }
 
-button:active {
+button:not(:disabled):not(.disabled):active {
   transform: translateY(1px);
 }
 
@@ -52,6 +83,7 @@ button:active {
 .halo-button-container svg {
   height: 100%;
   display: block;
+  width: auto;
 }
 
 /* Left edge */
@@ -72,4 +104,20 @@ button:active {
   aspect-ratio: var(--edge-ratio-right);
   flex: 0 0 auto;
   margin-left: -1px;
+}
+
+/* Size variants - scale button based on size prop */
+app-halo-forum-button[size="sm"] .halo-button-container svg {
+  transform: scaleY(0.75);
+  transform-origin: center;
+}
+
+app-halo-forum-button[size="lg"] .halo-button-container svg {
+  transform: scaleY(1.25);
+  transform-origin: center;
+}
+
+app-halo-forum-button[size="xl"] .halo-button-container svg {
+  transform: scaleY(1.5);
+  transform-origin: center;
 }
