@@ -1,5 +1,4 @@
 import { Component, input, output, computed } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
