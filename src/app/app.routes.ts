@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ButtonPage } from './pages/button-page/button-page';
+import { HomePage } from './pages/home-page/home-page';
 
 export const routes: Routes = [
   {
@@ -11,15 +12,18 @@ export const routes: Routes = [
     path: 'BungieNet-ComponentLibrary',
     children: [
       {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        component: HomePage
+      },
+      {
         path: 'buttons',
         component: ButtonPage
       },
-      // Add more component pages here
-      {
-        path: '',
-        redirectTo: 'buttons',
-        pathMatch: 'full'
-      }
     ]
   },
   {
