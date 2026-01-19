@@ -6,6 +6,15 @@
   font-style: normal;
 }
 
+/* Colors */
+:root {
+  --white: #FFFFFF;
+
+  --bungie-dark-blue: #14345A;
+  --bungie-light-blue: #3FA2FC;
+}
+
+
 html {
   background-color: #050813;
 }

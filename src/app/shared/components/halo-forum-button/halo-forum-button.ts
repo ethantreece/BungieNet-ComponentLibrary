@@ -24,9 +24,9 @@ export class HaloForumButton {
   text = input.required<string>();
 
   // Color inputs
-  baseColor = input<string>('#14345A');
-  outlineColor = input<string>('#3FA2FC');
-  textColor = input<string>('#FFFFFF');
+  baseColor = input<string>('var(--bungie-dark-blue)');
+  outlineColor = input<string>('var(--bungie-light-blue)');
+  textColor = input<string>('var(--white');
   
   /**
    * Button size options:
