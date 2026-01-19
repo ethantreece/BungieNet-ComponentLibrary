@@ -1,8 +1,19 @@
 <div>
   <!-- Basic Example -->
   <div>
-    <h2 style="margin-bottom: 1rem;">Basic Button</h2>
-    <app-halo-forum-button text="Default"></app-halo-forum-button>
+    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+      <h2>Basic Button</h2>
+      <mat-slide-toggle 
+        (change)="toggleDefaultVisible()" 
+        [checked]="defaultVisible()" 
+        matTooltip="Visible" matTooltipPosition="right"
+      />
+    </div>
+    <div style="min-height: 80px;">
+      @if (defaultVisible()) {
+        <app-halo-forum-button text="Default" />
+      }
+    </div>
   </div>
 
   <!-- Size Variants -->

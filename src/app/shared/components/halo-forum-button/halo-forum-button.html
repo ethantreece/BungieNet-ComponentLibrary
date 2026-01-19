@@ -1,15 +1,25 @@
 <button (click)="onClick()" [disabled]="disabled()">
-  <span class="halo-button-container" aria-hidden="true">
+  <span class="halo-button-container"
+    aria-hidden="true" 
+  >
 
     <!-- left -->
-    <svg class="left" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 121 221" preserveAspectRatio="none">
+    <svg class="left"
+      animate.enter="height-enter-animation"
+      animate.leave="height-leave-animation"
+      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 121 221" preserveAspectRatio="none"
+    >
       <polygon fill="var(--base-color)" points="121,185 121,37 99,37 64,72 64,146 103,185 121,185" />
       <polygon fill="var(--outline-color)" points="50,102 50,66 91,26 121,26 121,20 54,20 11,63 50,102" />
       <polygon fill="var(--outline-color)" points="121,37 121,32 96,32 59,69 59,149 100,190 121,190 121,185 103,185 64,146 64,72 99,37 121,37" />
     </svg>
 
     <!-- middle -->
-    <svg class="middle" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 424 221" preserveAspectRatio="none">
+    <svg class="middle"
+      animate.enter="width-enter-animation"
+      animate.leave="width-leave-animation"
+      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 424 221" preserveAspectRatio="none"
+    >
       <polygon fill="var(--base-color)" points="0,185 0,37 209,36 227,55 327,55 345,37 424,36 424,185 184,185 169,170 80,170 66,185 0,185" />
       <polygon fill="var(--outline-color)" points="66,185 80,170 169,170 184,185 66,185" />
       <polygon fill="var(--outline-color)" points="0,190 0,185 66,185 184,185 424,185 424,190 0,190" />
@@ -19,7 +29,11 @@
     </svg>
 
     <!-- right -->
-    <svg class="right" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 125 221" preserveAspectRatio="none">
+    <svg class="right"
+      animate.enter="height-enter-animation"
+      animate.leave="height-leave-animation"
+      version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 125 221" preserveAspectRatio="none"
+    >
       <polygon fill="var(--base-color)" points="0,185 0,37 8,37 54,82 54,133 60,127 70,138 66,138 21,185 0,185" />
       <polygon fill="var(--outline-color)" points="0,32 13,32 69,88 69,118 60,128 54,133 54,82 8,37 0,37 0,32" />
       <polygon fill="var(--outline-color)" points="70,138 66,138 21,185 0,185 0,190 3,190 28,214 101,138 70,138" />
@@ -27,5 +41,10 @@
 
   </span>
 
-  <span class="label">{{text()}}</span>
+  <span class="label" 
+    animate.enter="label-enter-animation"
+    animate.leave="label-leave-animation"
+  >
+    {{text()}}
+  </span>
 </button>

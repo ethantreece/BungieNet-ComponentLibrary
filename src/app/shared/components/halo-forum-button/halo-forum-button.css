@@ -5,21 +5,54 @@
   --padding-x: 2.25em;
 }
 
-.enter-animation {
-  animation: slide-fade 1s;
+.height-enter-animation {
+  animation: height-slide 300ms ease-out forwards;
 }
-@keyframes slide-fade {
+.height-leave-animation {
+  animation: height-slide 300ms ease-out reverse forwards;
+}
+@keyframes height-slide {
   from {
-    opacity: 0;
-    transform: scaleX(0);
+    max-height: 0;
   }
   to {
-    opacity: 1;
-    transform: scaleX(1);
+    max-height: 100%;
   }
 }
 
+.width-enter-animation {
+  animation: width-slide 300ms ease-out forwards;
+}
+.width-leave-animation {
+  animation: width-slide 300ms ease-out reverse forwards ;
+}
+@keyframes width-slide {
+  from {
+    max-width: 0;
+    max-height: 0;
+  }
+  to {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
 
+.label-enter-animation {
+  animation: label-reveal 300ms ease-out forwards;
+}
+.label-leave-animation {
+  animation: label-reveal 300ms ease-out reverse forwards;
+}
+@keyframes label-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    max-height: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    max-height: 100%;
+  }
+}
 
 /* Button reset */
 button {
