@@ -92,25 +92,6 @@ button .label {
   font-family: 'HaloCE', sans-serif;
 }
 
-/* Icon styling */
-button .icon-left,
-button .icon-right {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  font-size: 1.2em;
-}
-
-button .icon-left {
-  left: var(--padding-x);
-}
-
-button .icon-right {
-  right: var(--padding-x);
-}
-
 /* Hover polish */
 button:not(:disabled):not(.disabled):hover {
   filter: brightness(1.15);
