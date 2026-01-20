@@ -60,16 +60,13 @@ button {
   border: none;
   background: none;
   padding: 0;
-  cursor: pointer;
   font: inherit;
   transition: all 0.2s ease-in-out;
 }
 
 button:disabled,
 button.disabled {
-  cursor: not-allowed;
   opacity: 0.6;
-  pointer-events: none;
 }
 
 /* Text overlay */
@@ -84,7 +81,6 @@ button .label {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  pointer-events: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

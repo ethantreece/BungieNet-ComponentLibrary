@@ -15,9 +15,31 @@
   --bungie-light-blue: #3FA2FC;
 }
 
-
+/* Global Styles */
 html {
   background-color: #050813;
+}
+
+.cursor-default,
+html {
+  cursor: url('./assets/cursors/default.png'), auto;
+}
+
+/* Pointer cursor for clickable elements */
+.cursor-pointer,
+.mat-mdc-button-base,
+.mat-mdc-icon-button,
+.mat-mdc-fab,
+.mat-mdc-mini-fab,
+.mat-mdc-menu-item,
+.mat-mdc-list-item,
+.mat-mdc-tab,
+.mat-mdc-checkbox,
+.mat-mdc-radio-button,
+.mat-mdc-slide-toggle,
+.mdc-switch,
+button, a, [role="button"] {
+  cursor: url('./assets/cursors/pointer.png'), auto !important;
 }
 
 h1, h2 {
