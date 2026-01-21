@@ -5,9 +5,9 @@ import { MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-button-page',
-  imports: [HaloForumButton, MatSlideToggle, MatTooltipModule],
   templateUrl: './button-page.html',
   styleUrl: './button-page.css',
+  imports: [HaloForumButton, MatSlideToggle, MatTooltipModule],
 })
 export class ButtonPage {
 

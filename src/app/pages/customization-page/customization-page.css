@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  height: 80vh;
+  width: 80%;
+}
+
+.ui {
+  position: fixed;
+}
