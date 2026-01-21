@@ -41,6 +41,7 @@ export class HaloForumButton {
 
   // State inputs
   disabled = input<boolean>(false);
+  glow = input<boolean>(false);
 
   // Output for click events
   buttonClick = output<void>();
