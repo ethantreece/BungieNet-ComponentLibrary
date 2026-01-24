@@ -7,3 +7,9 @@
 .ui {
   position: fixed;
 }
+
+.page {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}

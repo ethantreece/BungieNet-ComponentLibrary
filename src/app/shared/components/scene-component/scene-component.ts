@@ -3,42 +3,49 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	OnInit,
+	booleanAttribute,
 	effect,
+  input,
+  signal,
 } from '@angular/core';
 import { NgtArgs } from 'angular-three';
-import { NgtsCameraControls } from 'angular-three-soba/controls';
 import { gltfResource } from 'angular-three-soba/loaders';
 import { NgtsCenter, NgtsEnvironment } from 'angular-three-soba/staging';
-import { Color, Mesh, MeshStandardMaterial, NoColorSpace, SRGBColorSpace, Texture, TextureLoader, WebGLProgramParametersWithUniforms } from 'three';
+import { Color, Mesh, MeshStandardMaterial, NoColorSpace, Texture, TextureLoader, WebGLProgramParametersWithUniforms } from 'three';
 import { GLTF } from 'three-stdlib';
+import {
+	TweakpaneCheckbox,
+	TweakpaneColor,
+	TweakpaneFolder,
+	TweakpaneList,
+	TweakpaneNumber,
+	TweakpanePane,
+} from 'angular-three-tweakpane';
+import { NgtpBloom, NgtpEffectComposer, NgtpGlitch } from 'angular-three-postprocessing';
+import { NgtsOrbitControls } from 'angular-three-soba/controls';
+import { AnimationMixer } from 'three';
+import { injectBeforeRender } from 'angular-three';
 
 @Component({
-  selector: 'app-scene-component',
-  template: `        
+  selector: 'app-model',
+  template: `
     <ngts-center>
       <ngt-primitive *args="[gltf.scene()]" />
     </ngts-center>
-
-    <ngt-ambient-light [intensity]="1" />
-    <ngt-directional-light
-      [position]="[10, 10, 10]"
-      [intensity]="10"
-      [castShadow]="true"
-    />
-
-    <ngts-environment [options]="{ preset: 'sunset', background: false, blur: 0.5 }" />
-
-    <ngts-camera-controls />
   `,
-  imports: [NgtArgs, NgtsCameraControls, NgtsEnvironment, NgtsCenter],  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [NgtArgs, NgtsCenter],  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SceneComponent implements OnInit {
+export class Model implements OnInit {
+	protected Math = Math;
 
-  protected gltf = gltfResource<GLTF>(() => '3d/test_3.glb');
-  
-  primaryColor = new Color('#ff0000');
-  secondaryColor = new Color('#00ff00');
+  protected gltf = gltfResource<GLTF>(() => '3d/spartan_idle.glb');
+
+  private mixer!: AnimationMixer;
+
+  // 🎨 CUSTOM COLORS
+  primaryColor = input.required<Color>();
+  secondaryColor = input.required<Color>();
 
   ccMask!: Texture<HTMLImageElement>;
 
@@ -48,9 +55,25 @@ export class SceneComponent implements OnInit {
   }
 
   constructor() {
+
+    injectBeforeRender(({ delta }) => {
+      if (this.mixer) {
+        this.mixer.update(delta);
+      }
+    });
+
     effect(() => {
       const scene = this.gltf.scene();
-      if (!scene) return;
+      if (!scene || !this.ccMask) return;
+
+      if (!this.mixer && this.gltf.value()?.animations.length) {
+        this.mixer = new AnimationMixer(scene);
+
+        const clip = this.gltf.value()?.animations[0];
+        if (clip) {
+          this.mixer.clipAction(clip).play();
+        }
+      }
 
       scene.traverse(obj => {
         if (!(obj instanceof Mesh)) return;
@@ -58,57 +81,78 @@ export class SceneComponent implements OnInit {
         const mat = obj.material;
         if (Array.isArray(mat)) return;
 
-        console.log('Patching material for CC:', mat.name, obj, mat);
-
+        // ARMOR MATERIAL
         if (
           mat instanceof MeshStandardMaterial &&
           mat.map &&
           mat.name !== 'masterchief_visor'
         ) {
+          if (!(mat as any).__ccPatched) {
+            (mat as any).__ccPatched = true;
 
-          // Prevent double-patching
-          if ((mat as any).__ccPatched) return;
-          (mat as any).__ccPatched = true;
+            mat.onBeforeCompile = shader => {
+              shader.uniforms['primaryColor'] = { value: this.primaryColor() };
+              shader.uniforms['secondaryColor'] = { value: this.secondaryColor() };
+              shader.uniforms['ccMask'] = { value: this.ccMask };
 
-          mat.onBeforeCompile = shader => {
-            this.addColors(shader, this.ccMask);
-          };
+              mat.userData['ccUniforms'] = shader.uniforms;
 
-          mat.needsUpdate = true;
-        } else if (mat.name === 'masterchief_visor') {
-          if (!(mat instanceof MeshStandardMaterial)) return;
+              shader.fragmentShader = shader.fragmentShader.replace(
+                '#include <common>',
+                `
+                #include <common>
+                uniform vec3 primaryColor;
+                uniform vec3 secondaryColor;
+                uniform sampler2D ccMask;
+                `
+              );
 
-          // Base gold color
-          mat.color.set('#d4a017'); // rich gold
+              shader.fragmentShader = shader.fragmentShader.replace(
+                '#include <map_fragment>',
+                `
+                #include <map_fragment>
 
-          // Physical properties
-          mat.metalness = 1.0;
-          mat.roughness = 0.1; // smooth, glassy
+                vec4 mask = texture2D(ccMask, vMapUv);
 
-          // Make reflections pop
-          mat.envMapIntensity = 2.5;
+                diffuseColor.rgb *=
+                  mask.r * primaryColor +
+                  mask.g * secondaryColor +
+                  mask.b;
+                `
+              );
+            };
 
-          // Slight emissive glow (Blender-like)
-          mat.emissive.set('#553300');
-          mat.emissiveIntensity = 0.4;
-
-          // Optional: tint texture if one exists
-          if (mat.map) {
-            mat.map.colorSpace = SRGBColorSpace;
+            mat.needsUpdate = true;
           }
 
-          // Ensure correct lighting update
-          mat.needsUpdate = true;
+          // LIVE UPDATE
+          mat.userData['asdf'] = 'penis'; // debugging
+          const uniforms = mat.userData?.['ccUniforms'];
+          if (uniforms) {
+            uniforms.primaryColor.value.copy(this.primaryColor());
+            uniforms.secondaryColor.value.copy(this.secondaryColor());
+          }
         }
 
+        // VISOR MATERIAL
+        else if (mat.name === 'masterchief_visor' && mat instanceof MeshStandardMaterial) {
+          mat.color.set('#d4a017');
+          mat.metalness = 1.0;
+          mat.roughness = 0.1;
+          mat.envMapIntensity = 2.5;
+          mat.emissive.set('#553300');
+          mat.emissiveIntensity = 0.4;
+          mat.needsUpdate = true;
+        }
       });
     });
   }
 
+
   addColors(shader: WebGLProgramParametersWithUniforms, ccMask: Texture<HTMLImageElement>): void {
     // Uniforms
-    shader.uniforms['primaryColor'] = { value: this.primaryColor };
-    shader.uniforms['secondaryColor'] = { value: this.secondaryColor };
+    shader.uniforms['primaryColor'] = { value: this.primaryColor() };
+    shader.uniforms['secondaryColor'] = { value: this.secondaryColor() };
     shader.uniforms['ccMask'] = { value: ccMask };
 
     // Declare uniforms
@@ -138,5 +182,108 @@ export class SceneComponent implements OnInit {
       `
     );
   }
-
 };
+
+
+@Component({
+	selector: 'app-scene-component',
+	template: `
+		<ngt-color *args="[backgroundColor()]" attach="background" />
+		<ngt-ambient-light [intensity]="0.8" />
+		<ngt-point-light [intensity]="Math.PI" [decay]="0" [position]="[0, 6, 0]" />
+
+		<app-model [primaryColor]="primaryColor()" [secondaryColor]="secondaryColor()" />
+
+		@if (!asRenderTexture()) {
+			<ngtp-effect-composer>
+				@if (bloom()) {
+					<ngtp-bloom
+						[options]="{
+							kernelSize: 3,
+							luminanceThreshold: luminanceThreshold(),
+							luminanceSmoothing: luminanceSmoothing(),
+							intensity: intensity(),
+						}"
+					/>
+				}
+
+				@if (glitch()) {
+					<ngtp-glitch />
+				}
+
+        <ngts-environment [options]="{
+            preset: selectedEnvironment(),
+            background: false,
+            blur: 0.5,
+          }"   
+        />
+
+			</ngtp-effect-composer>
+
+			<ngts-orbit-controls [options]="{ makeDefault: true, autoRotate: false }" />
+
+			<tweakpane-pane title="Soba Basic" top="5rem" right="2rem">
+				<tweakpane-folder title="Bloom">
+					<tweakpane-checkbox [(value)]="bloom" label="Enabled" />
+					<tweakpane-number
+						[(value)]="luminanceThreshold"
+						label="luminanceThreshold"
+						[params]="{ min: 0, max: 1, step: 0.01 }"
+					/>
+					<tweakpane-number
+						[(value)]="luminanceSmoothing"
+						label="luminanceSmoothing"
+						[params]="{ min: 0, max: 1, step: 0.01 }"
+					/>
+					<tweakpane-number
+						[(value)]="intensity"
+						label="bloomIntensity"
+						[params]="{ min: 0, max: 10, step: 0.5 }"
+					/>
+				</tweakpane-folder>
+				<tweakpane-folder title="Glitch">
+					<tweakpane-checkbox [(value)]="glitch" label="Enabled" />
+				</tweakpane-folder>
+
+				<tweakpane-list [(value)]="selectedEnvironment" [options]="['apartment', 'city', 'dawn', 'forest' , 'lobby' , 'night' , 'park' , 'studio' , 'sunset' , 'warehouse']" label="Environment" />
+				<tweakpane-color [(value)]="backgroundColor" label="Background" />
+			</tweakpane-pane>
+		}
+	`,
+	imports: [
+    NgtsEnvironment,
+		NgtsOrbitControls,
+		NgtArgs,
+		Model,
+		NgtpEffectComposer,
+		NgtpBloom,
+		NgtpGlitch,
+		TweakpanePane,
+		TweakpaneFolder,
+		TweakpaneCheckbox,
+		TweakpaneList,
+		TweakpaneColor,
+		TweakpaneNumber,
+	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
+	host: { class: 'soba-experience' },
+})
+export class SceneComponent {
+	protected Math = Math;
+
+  primaryColor = input.required<Color>();
+  secondaryColor = input.required<Color>();
+
+  protected bloom = signal(false);
+  protected glitch = signal(false);
+  protected selectedEnvironment = signal<"apartment" | "city" | "dawn" | "forest" | "lobby" | "night" | "park" | "studio" | "sunset" | "warehouse" | undefined>('sunset');
+
+	protected backgroundColor = signal('#898989');
+
+	protected luminanceThreshold = signal(0);
+	protected luminanceSmoothing = signal(0.4);
+	protected intensity = signal(1.5);
+
+	asRenderTexture = input(false, { transform: booleanAttribute });
+}

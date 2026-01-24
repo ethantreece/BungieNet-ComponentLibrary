@@ -1,17 +1,30 @@
-<ngt-canvas
-  [camera]="{ position: [0, 1.6, 3], fov: 50 }"
->
-  <app-scene-component *canvasContent />
-</ngt-canvas>
+<div class="page">
+  <div class="panel">
+    <h1>Customization Page</h1>
+    <p>Customize your Spartan colors.</p>
 
-<!-- <div class="ui">
-  <label>
-    Primary
-    <input type="color" (input)="scene?.setPrimary($any($event.target).value)" />
-  </label>
+    <label>
+      Primary Color
+      <input
+        type="color"
+        [value]="primaryHex()"
+        (input)="setPrimary($event)"
+      />
+    </label>
 
-  <label>
-    Secondary
-    <input type="color" (input)="scene?.setSecondary($any($event.target).value)" />
-  </label>
-</div> -->
+    <label>
+      Secondary Color
+      <input
+        type="color"
+        [value]="secondaryHex()"
+        (input)="setSecondary($event)"
+      />
+    </label>
+  </div>
+
+  <ngt-canvas [camera]="{ position: [50, 30, 50], fov: 60 }" shadows>
+    <app-scene-component *canvasContent [primaryColor]="primaryColor()" [secondaryColor]="secondaryColor()" />
+  </ngt-canvas>
+
+</div>
+
