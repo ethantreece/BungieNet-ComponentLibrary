@@ -11,7 +11,7 @@ import {
 import { injectBeforeRender, NgtArgs, NGT_STORE } from 'angular-three';
 import { gltfResource } from 'angular-three-soba/loaders';
 import { NgtsCenter, NgtsEnvironment } from 'angular-three-soba/staging';
-import { Color, Mesh, MeshStandardMaterial, NoColorSpace, Texture, TextureLoader, Vector3, WebGLProgramParametersWithUniforms } from 'three';
+import { Color, Mesh, MeshStandardMaterial, NoColorSpace, Texture, TextureLoader, Vector3, WebGLProgramParametersWithUniforms, SkinnedMesh, Bone } from 'three';
 import { GLTF } from 'three-stdlib';
 import {
 	TweakpaneCheckbox,
@@ -40,9 +40,15 @@ export class Model implements OnInit {
 
 	protected Math = Math;
 
-  protected gltf = gltfResource<GLTF>(() => '3d/spartan_idle.glb');
+  /**
+   * For this to work, I had to export from Blender with Data > Armature > Use Rest Position disabled.
+   * The gun is then attached to the hand bone here in code instead of in Blender, and with the rest
+   * position being the first frame of the animation, it stays put correctly.
+   */
+  protected gltf = gltfResource<GLTF>(() => '3d/spartan_idle_with_rifle_reset_rest.glb');
 
   private mixer!: AnimationMixer;
+  private weaponAttached = false;
 
   // 🎨 CUSTOM COLORS
   primaryColor = input.required<Color>();
@@ -76,6 +82,19 @@ export class Model implements OnInit {
         }
       }
 
+      // Attach battle rifle to a hand/weapon bone once
+      if (!this.weaponAttached) {
+        // Find a hand/weapon bone
+        let handBone = scene.getObjectByName('r_ring2');
+        let gun = scene.getObjectByName('battle_rifle');
+
+        // Attach while preserving world transform
+        if (gun && handBone) {
+          handBone.attach(gun);
+          this.weaponAttached = true;
+        }
+      }
+
       scene.traverse(obj => {
         if (!(obj instanceof Mesh)) return;
 
@@ -86,7 +105,7 @@ export class Model implements OnInit {
         if (
           mat instanceof MeshStandardMaterial &&
           mat.map &&
-          mat.name !== 'masterchief_visor'
+          mat.name === 'masterchief'
         ) {
           if (!(mat as any).__ccPatched) {
             (mat as any).__ccPatched = true;
@@ -126,15 +145,12 @@ export class Model implements OnInit {
             mat.needsUpdate = true;
           }
 
-          // LIVE UPDATE
-          mat.userData['asdf'] = 'penis'; // debugging
           const uniforms = mat.userData?.['ccUniforms'];
           if (uniforms) {
             uniforms.primaryColor.value.copy(this.primaryColor());
             uniforms.secondaryColor.value.copy(this.secondaryColor());
           }
         }
-
         // VISOR MATERIAL
         else if (mat.name === 'masterchief_visor' && mat instanceof MeshStandardMaterial) {
           mat.color.set('#d4a017');
@@ -217,17 +233,17 @@ export class Model implements OnInit {
 	imports: [
     NgtsEnvironment,
 		NgtsOrbitControls,
-		NgtArgs,
+		// NgtArgs,
 		Model,
 		NgtpEffectComposer,
 		NgtpBloom,
-		NgtpGlitch,
-		TweakpanePane,
-		TweakpaneFolder,
-		TweakpaneCheckbox,
-		TweakpaneList,
-		TweakpaneColor,
-		TweakpaneNumber,
+		// NgtpGlitch,
+		// TweakpanePane,
+		// TweakpaneFolder,
+		// TweakpaneCheckbox,
+		// TweakpaneList,
+		// TweakpaneColor,
+		// TweakpaneNumber,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],

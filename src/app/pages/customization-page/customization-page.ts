@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, effect, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, effect, signal, PLATFORM_ID, inject } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
 import { NgtCanvasContent } from "angular-three/dom";
 import { NgtCanvas } from "angular-three/dom";
 import { SceneComponent } from "../../shared/components/scene-component/scene-component";
@@ -38,7 +39,9 @@ const SECONDARY_KEY = 'spartan-secondary-color';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomizationPage {
-  scene?: SceneComponent;  
+  scene?: SceneComponent;
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
 
   colors = colorPalette;
   primaryColor = signal(new Color('#ff0000'));
@@ -61,6 +64,8 @@ export class CustomizationPage {
   });
 
   ngOnInit() {
+    if (!this.isBrowser) return;
+
     const savedPrimary = localStorage.getItem(PRIMARY_KEY);
     const savedSecondary = localStorage.getItem(SECONDARY_KEY);
 
@@ -75,11 +80,15 @@ export class CustomizationPage {
 
   constructor() {
     effect(() => {
-      localStorage.setItem(PRIMARY_KEY, this.primaryHex());
+      if (this.isBrowser) {
+        localStorage.setItem(PRIMARY_KEY, this.primaryHex());
+      }
     });
 
     effect(() => {
-      localStorage.setItem(SECONDARY_KEY, this.secondaryHex());
+      if (this.isBrowser) {
+        localStorage.setItem(SECONDARY_KEY, this.secondaryHex());
+      }
     });
   }
 
