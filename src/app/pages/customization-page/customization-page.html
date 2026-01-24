@@ -42,6 +42,25 @@
         </div>
       </div>
 
+      <!-- Color Grid for Primary -->
+      @if (selectedPart() === 'primary') {
+        <div class="color-picker-subpanel">
+          <div class="color-grid">
+            @for (c of colors; track $index) {
+              <button
+                class="color-swatch-btn"
+                [style.background]="c.hex"
+                [class.selected]="primaryHex() === c.hex.toLowerCase()"
+                (click)="setPrimaryHex(c.hex)"
+                [title]="c.name"
+              >
+                <div class="selection-marker"></div>
+              </button>
+            }
+          </div>
+        </div>
+      }
+
       <div class="list-item" 
         [class.active]="selectedPart() === 'secondary'"
         (click)="selectedPart.set('secondary')"
@@ -56,22 +75,24 @@
         </div>
       </div>
 
-      <!-- Color Grid for the selected part -->
-      <div class="color-picker-subpanel">
-        <div class="color-grid">
-          @for (c of colors; track $index) {
-            <button
-              class="color-swatch-btn"
-              [style.background]="c.hex"
-              [class.selected]="(selectedPart() === 'primary' ? primaryHex() : secondaryHex()) === c.hex.toLowerCase()"
-              (click)="selectedPart() === 'primary' ? setPrimaryHex(c.hex) : setSecondaryHex(c.hex)"
-              [title]="c.name"
-            >
-              <div class="selection-marker"></div>
-            </button>
-          }
+      <!-- Color Grid for Secondary -->
+      @if (selectedPart() === 'secondary') {
+        <div class="color-picker-subpanel">
+          <div class="color-grid">
+            @for (c of colors; track $index) {
+              <button
+                class="color-swatch-btn"
+                [style.background]="c.hex"
+                [class.selected]="secondaryHex() === c.hex.toLowerCase()"
+                (click)="setSecondaryHex(c.hex)"
+                [title]="c.name"
+              >
+                <div class="selection-marker"></div>
+              </button>
+            }
+          </div>
         </div>
-      </div>
+      }
 
       <div class="list-item locked">
         <span class="label">Primary Emblem Color</span>
