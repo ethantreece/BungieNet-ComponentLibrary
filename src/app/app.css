@@ -3,3 +3,76 @@
   flex-direction: column;
   min-height: 100vh;
 }
+
+header {
+  width: 100%;
+  background: var(--halo-nav-bg);
+  backdrop-filter: blur(10px);
+  padding: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--halo-border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.header-title {
+  font-family: 'HaloCE', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--bungie-light-blue);
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--bungie-blue-glow);
+}
+
+.header-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header-nav a {
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  font-family: 'HaloCE', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.header-nav a:hover {
+  color: #fff;
+  text-shadow: 0 0 8px var(--bungie-blue-glow);
+}
+
+.header-nav a.active {
+  color: var(--bungie-light-blue);
+  border-bottom: 2px solid var(--bungie-light-blue);
+  background: linear-gradient(to bottom, transparent, rgba(0, 251, 255, 0.1));
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

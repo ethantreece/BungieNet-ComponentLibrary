@@ -37,6 +37,7 @@ import { injectBeforeRender } from 'angular-three';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Model implements OnInit {
+
 	protected Math = Math;
 
   protected gltf = gltfResource<GLTF>(() => '3d/spartan_idle.glb');

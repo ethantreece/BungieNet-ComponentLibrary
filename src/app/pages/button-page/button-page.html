@@ -1,59 +1,63 @@
-<div>
-  <!-- Basic Example -->
-  <div>
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <h2>Basic Button</h2>
-      <mat-slide-toggle 
-        class="cursor-pointer"
-        (change)="toggleDefaultVisible()" 
-        [checked]="defaultVisible()" 
-        matTooltip="Visible" matTooltipPosition="right"
-      />
-    </div>
-    <div style="min-height: 80px;">
-      @if (defaultVisible()) {
-        <app-halo-forum-button text="Default" />
-      }
+<div class="showcase-container">
+  <div class="side-nav">
+    <h1 class="page-title">COMPONENT SHOWCASE</h1>
+    <div class="nav-links">
+      <a href="#basic" class="nav-item">BASIC EXAMPLE</a>
+      <a href="#sizes" class="nav-item">SIZE VARIANTS</a>
+      <a href="#colors" class="nav-item">CUSTOM COLORS</a>
+      <a href="#states" class="nav-item">STATES</a>
     </div>
   </div>
 
-  <!-- Size Variants -->
-  <div>
-    <h2 style="margin-bottom: 1rem;">Size Variants</h2>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-start;">
-      <app-halo-forum-button text="Small" size="sm"></app-halo-forum-button>
-      <app-halo-forum-button text="Medium" size="md"></app-halo-forum-button>
-      <app-halo-forum-button text="Large" size="lg"></app-halo-forum-button>
-      <app-halo-forum-button text="X-Large" size="xl"></app-halo-forum-button>
-    </div>
-  </div>
+  <div class="main-content">
+    <!-- Basic Example -->
+    <section id="basic" class="showcase-section">
+      <div class="section-header">
+        <h2 class="section-title">PRIMARY ACTION</h2>
+        <mat-slide-toggle 
+          class="cursor-pointer"
+          (change)="toggleDefaultVisible()" 
+          [checked]="defaultVisible()" 
+          matTooltip="Toggle Component"
+        />
+      </div>
+      <div class="demo-area">
+        @if (defaultVisible()) {
+          <app-halo-forum-button text="INITIATE COMMAND" />
+        }
+      </div>
+    </section>
 
-  <!-- Custom Colors -->
-  <div>
-    <h2 style="margin-bottom: 1rem;">Custom Colors</h2>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <app-halo-forum-button text="Blue" baseColor="#1E90FF" outlineColor="#00BFFF"></app-halo-forum-button>
-      <app-halo-forum-button text="Green" baseColor="#228B22" outlineColor="#00FF00"></app-halo-forum-button>
-      <app-halo-forum-button text="Purple" baseColor="#9932CC" outlineColor="#DA70D6"></app-halo-forum-button>
-      <app-halo-forum-button text="Red" baseColor="#DC143C" outlineColor="#FF6347"></app-halo-forum-button>
-      <app-halo-forum-button text="Gold" baseColor="#FFD700" outlineColor="#FFA500" textColor="#000"></app-halo-forum-button>
-    </div>
-  </div>
+    <!-- Size Variants -->
+    <section id="sizes" class="showcase-section">
+      <h2 class="section-title">SCALING MODULES</h2>
+      <div class="demo-area horizontal">
+        <app-halo-forum-button text="Small" size="sm"></app-halo-forum-button>
+        <app-halo-forum-button text="Medium" size="md"></app-halo-forum-button>
+        <app-halo-forum-button text="Large" size="lg"></app-halo-forum-button>
+        <app-halo-forum-button text="X-Large" size="xl"></app-halo-forum-button>
+      </div>
+    </section>
 
-  <!-- Padding Variations -->
-  <div>
-    <h2 style="margin-bottom: 1rem;">Glow</h2>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <app-halo-forum-button text="Glowing" [paddingX]="1"></app-halo-forum-button>
-    </div>
-  </div>
+    <!-- Custom Colors -->
+    <section id="colors" class="showcase-section">
+      <h2 class="section-title">COLOR PALETTES</h2>
+      <div class="demo-area wrap">
+        <app-halo-forum-button text="COBALT" baseColor="#1E90FF" outlineColor="#00BFFF"></app-halo-forum-button>
+        <app-halo-forum-button text="EMERALD" baseColor="#165b33" outlineColor="#00FF00"></app-halo-forum-button>
+        <app-halo-forum-button text="VIOLET" baseColor="#4B0082" outlineColor="#DA70D6"></app-halo-forum-button>
+        <app-halo-forum-button text="CRIMSON" baseColor="#7b1113" outlineColor="#FF6347"></app-halo-forum-button>
+        <app-halo-forum-button text="GOLD" baseColor="#b8860b" outlineColor="#FFD700" textColor="#fff"></app-halo-forum-button>
+      </div>
+    </section>
 
-  <!-- Disabled State -->
-  <div>
-    <h2 style="margin-bottom: 1rem;">Disabled State</h2>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-      <app-halo-forum-button text="Active" [disabled]="false"></app-halo-forum-button>
-      <app-halo-forum-button text="Disabled" [disabled]="true"></app-halo-forum-button>
-    </div>
+    <!-- States -->
+    <section id="states" class="showcase-section">
+      <h2 class="section-title">SYSTEM STATES</h2>
+      <div class="demo-area horizontal">
+        <app-halo-forum-button text="ACTIVE SYSTEM" [disabled]="false"></app-halo-forum-button>
+        <app-halo-forum-button text="OFFLINE" [disabled]="true"></app-halo-forum-button>
+      </div>
+    </section>
   </div>
 </div>

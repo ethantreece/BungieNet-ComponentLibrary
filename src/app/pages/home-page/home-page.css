@@ -1,6 +1,109 @@
-.home-page {
-  min-height: 100%;
+.home-container {
+  position: relative;
   width: 100%;
-  background-image: var(--bg);
-  background-size: cover;
+  height: calc(100vh - 60px); /* Adjust for header */
+  overflow: hidden;
+  display: flex;
+}
+
+.menu-overlay {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 4rem;
+  background: linear-gradient(to right, rgba(4, 11, 21, 0.9) 0%, rgba(4, 11, 21, 0.6) 30%, transparent 100%);
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 450px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.main-title {
+  font-family: 'HaloCE', sans-serif;
+  font-size: 5rem;
+  margin: 0;
+  color: #fff;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  text-shadow: 0 0 20px var(--bungie-blue-glow);
+}
+
+.subtitle {
+  font-family: 'HaloCE', sans-serif;
+  font-size: 1.25rem;
+  color: var(--bungie-light-blue);
+  letter-spacing: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.status-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--halo-border);
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.player-tag {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rank-icon {
+  background: var(--bungie-light-blue);
+  color: var(--bungie-dark-blue);
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+  font-family: 'HaloCE', sans-serif;
+}
+
+.name {
+  color: #fff;
+  font-family: 'HaloCE', sans-serif;
+  letter-spacing: 0.1em;
+  font-size: 1.1rem;
+}
+
+/* Decor */
+.background-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(63, 162, 252, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63, 162, 252, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.glow-sphere {
+  position: absolute;
+  top: 50%;
+  right: -5%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(0, 251, 255, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+  transform: translateY(-50%);
 }

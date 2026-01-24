@@ -1,5 +1,45 @@
-<div class="home-page" 
-  [style.--bg]="'url(bg-images/1995x2800/bg_body.jpg)'"
->
-  <h1>HOME</h1>
+<div class="home-container">
+  <div class="menu-overlay">
+    <div class="side-panel">
+      <div class="logo-container">
+        <h1 class="main-title">HALO 2</h1>
+        <span class="subtitle">COMPONENT LIBRARY</span>
+      </div>
+
+      <nav class="main-menu">
+        <app-halo-forum-button 
+          text="COMPONENT SHOWCASE" 
+          [routerLink]="['/BungieNet-ComponentLibrary/buttons']"
+          size="md"
+        />
+        <app-halo-forum-button 
+          text="SPARTAN CUSTOMIZATION" 
+          [routerLink]="['/BungieNet-ComponentLibrary/customization']"
+          size="md"
+        />
+        <app-halo-forum-button 
+          text="BUNGIE.NET ARCHIVE" 
+          size="md"
+          [disabled]="true"
+        />
+        <app-halo-forum-button 
+          text="SETTINGS" 
+          size="md"
+          [disabled]="true"
+        />
+      </nav>
+
+      <div class="status-footer">
+        <div class="player-tag">
+          <span class="rank-icon">SR</span>
+          <span class="name">MASTER CHIEF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="background-decor">
+    <div class="grid-lines"></div>
+    <div class="glow-sphere"></div>
+  </div>
 </div>
