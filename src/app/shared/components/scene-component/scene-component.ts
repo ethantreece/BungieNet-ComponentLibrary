@@ -8,10 +8,10 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { NgtArgs } from 'angular-three';
+import { injectBeforeRender, NgtArgs, NGT_STORE } from 'angular-three';
 import { gltfResource } from 'angular-three-soba/loaders';
 import { NgtsCenter, NgtsEnvironment } from 'angular-three-soba/staging';
-import { Color, Mesh, MeshStandardMaterial, NoColorSpace, Texture, TextureLoader, WebGLProgramParametersWithUniforms } from 'three';
+import { Color, Mesh, MeshStandardMaterial, NoColorSpace, Texture, TextureLoader, Vector3, WebGLProgramParametersWithUniforms } from 'three';
 import { GLTF } from 'three-stdlib';
 import {
 	TweakpaneCheckbox,
@@ -24,7 +24,7 @@ import {
 import { NgtpBloom, NgtpEffectComposer, NgtpGlitch } from 'angular-three-postprocessing';
 import { NgtsOrbitControls } from 'angular-three-soba/controls';
 import { AnimationMixer } from 'three';
-import { injectBeforeRender } from 'angular-three';
+import { inject, output } from '@angular/core';
 
 @Component({
   selector: 'app-model',
@@ -189,67 +189,30 @@ export class Model implements OnInit {
 @Component({
 	selector: 'app-scene-component',
 	template: `
-		<ngt-color *args="[backgroundColor()]" attach="background" />
-		<ngt-ambient-light [intensity]="0.8" />
-		<ngt-point-light [intensity]="Math.PI" [decay]="0" [position]="[0, 6, 0]" />
+		<ngt-ambient-light [intensity]="0.4" />
+		<ngt-point-light [intensity]="Math.PI * 2" [decay]="1" [position]="[2, 2, 2]" [color]="'#3FA2FC'" />
+		<ngt-point-light [intensity]="Math.PI" [decay]="1" [position]="[-2, 1, -2]" [color]="'#ffffff'" />
 
 		<app-model [primaryColor]="primaryColor()" [secondaryColor]="secondaryColor()" />
 
-		@if (!asRenderTexture()) {
-			<ngtp-effect-composer>
-				@if (bloom()) {
-					<ngtp-bloom
-						[options]="{
-							kernelSize: 3,
-							luminanceThreshold: luminanceThreshold(),
-							luminanceSmoothing: luminanceSmoothing(),
-							intensity: intensity(),
-						}"
-					/>
-				}
+		<ngtp-effect-composer>
+      <ngtp-bloom
+        [options]="{
+          kernelSize: 3,
+          luminanceThreshold: 0.1,
+          luminanceSmoothing: 0.2,
+          intensity: 0.5,
+        }"
+      />
 
-				@if (glitch()) {
-					<ngtp-glitch />
-				}
+      <ngts-environment [options]="{
+          preset: 'studio',
+          background: false,
+        }"   
+      />
+		</ngtp-effect-composer>
 
-        <ngts-environment [options]="{
-            preset: selectedEnvironment(),
-            background: false,
-            blur: 0.5,
-          }"   
-        />
-
-			</ngtp-effect-composer>
-
-			<ngts-orbit-controls [options]="{ makeDefault: true, autoRotate: false }" />
-
-			<tweakpane-pane title="Soba Basic" top="5rem" right="2rem">
-				<tweakpane-folder title="Bloom">
-					<tweakpane-checkbox [(value)]="bloom" label="Enabled" />
-					<tweakpane-number
-						[(value)]="luminanceThreshold"
-						label="luminanceThreshold"
-						[params]="{ min: 0, max: 1, step: 0.01 }"
-					/>
-					<tweakpane-number
-						[(value)]="luminanceSmoothing"
-						label="luminanceSmoothing"
-						[params]="{ min: 0, max: 1, step: 0.01 }"
-					/>
-					<tweakpane-number
-						[(value)]="intensity"
-						label="bloomIntensity"
-						[params]="{ min: 0, max: 10, step: 0.5 }"
-					/>
-				</tweakpane-folder>
-				<tweakpane-folder title="Glitch">
-					<tweakpane-checkbox [(value)]="glitch" label="Enabled" />
-				</tweakpane-folder>
-
-				<tweakpane-list [(value)]="selectedEnvironment" [options]="['apartment', 'city', 'dawn', 'forest' , 'lobby' , 'night' , 'park' , 'studio' , 'sunset' , 'warehouse']" label="Environment" />
-				<tweakpane-color [(value)]="backgroundColor" label="Background" />
-			</tweakpane-pane>
-		}
+    <ngts-orbit-controls [options]="{ makeDefault: true }" />
 	`,
 	imports: [
     NgtsEnvironment,
@@ -275,6 +238,14 @@ export class SceneComponent {
 
   primaryColor = input.required<Color>();
   secondaryColor = input.required<Color>();
+
+  cameraChange = output<Vector3>();
+
+  constructor() {
+    injectBeforeRender(({ camera }) => {
+      this.cameraChange.emit(camera.position);
+    });
+  }
 
   protected bloom = signal(false);
   protected glitch = signal(false);

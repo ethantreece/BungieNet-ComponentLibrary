@@ -1,72 +1,132 @@
 <div class="customization-container">
-  <div class="ui-overlay">
-    <div class="header-section">
-      <h1 class="page-title">SPARTAN APPEARANCE</h1>
-      <div class="separator"></div>
+  <!-- Background patterns -->
+  <div class="h2-bg-overlay">
+    <div class="technical-text top">04:40 &nbsp;&nbsp; 04:42 &nbsp;&nbsp; 04:44 &nbsp;&nbsp; 04:46 &nbsp;&nbsp; 04:48 &nbsp;&nbsp; 04:50 &nbsp;&nbsp; 04:52 &nbsp;&nbsp; 04:54</div>
+    <div class="scanlines"></div>
+  </div>
+
+  <div class="ui-layout">
+    <!-- Top Card -->
+    <div class="player-card">
+      <div class="emblem-container">
+        <div class="emblem-placeholder">
+          <img src="bg-images/250x150/bungie_day_01.jpg" alt="Emblem" />
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="username">darknight2237</div>
+        <div class="description">
+          Give your profile its own unique visual look. In team games, your primary armor color takes on your team color.
+        </div>
+      </div>
     </div>
 
-    <div class="controls-panel">
-      <!-- PRIMARY -->
-      <div class="color-section">
-        <h2 class="section-label">PRIMARY ARMOR COLOR</h2>
+    <!-- Selection List -->
+    <div class="selection-box">
+      <div class="list-item locked">
+        <span class="label">Player Model</span>
+        <span class="value">Spartan</span>
+      </div>
+
+      <div class="list-item" 
+        [class.active]="selectedPart() === 'primary'"
+        (click)="selectedPart.set('primary')"
+      >
+        @if (selectedPart() === 'primary') {
+          <div class="selection-arrow"></div>
+        }
+        <span class="label">Primary Player Color</span>
+        <div class="value-container">
+          <span class="value">{{primaryName()}}</span>
+          <div class="color-preview" [style.background]="primaryHex()"></div>
+        </div>
+      </div>
+
+      <div class="list-item" 
+        [class.active]="selectedPart() === 'secondary'"
+        (click)="selectedPart.set('secondary')"
+      >
+        @if (selectedPart() === 'secondary') {
+          <div class="selection-arrow"></div>
+        }
+        <span class="label">Secondary Player Color</span>
+        <div class="value-container">
+          <span class="value">{{secondaryName()}}</span>
+          <div class="color-preview" [style.background]="secondaryHex()"></div>
+        </div>
+      </div>
+
+      <!-- Color Grid for the selected part -->
+      <div class="color-picker-subpanel">
         <div class="color-grid">
           @for (c of colors; track $index) {
             <button
               class="color-swatch-btn"
               [style.background]="c.hex"
-              [class.selected]="primaryHex() === c.hex.toLowerCase()"
-              (click)="setPrimaryHex(c.hex)"
+              [class.selected]="(selectedPart() === 'primary' ? primaryHex() : secondaryHex()) === c.hex.toLowerCase()"
+              (click)="selectedPart() === 'primary' ? setPrimaryHex(c.hex) : setSecondaryHex(c.hex)"
               [title]="c.name"
             >
               <div class="selection-marker"></div>
             </button>
           }
         </div>
-        <div class="current-color-info">
-          CURRENT: <span class="color-name">{{primaryHex()}}</span>
+      </div>
+
+      <div class="list-item locked">
+        <span class="label">Primary Emblem Color</span>
+        <div class="value-container">
+          <span class="value">Orange</span>
+          <div class="color-preview" style="background: #F57A1F;"></div>
         </div>
       </div>
 
-      <!-- SECONDARY -->
-      <div class="color-section">
-        <h2 class="section-label">SECONDARY ARMOR COLOR</h2>
-        <div class="color-grid">
-          @for (c of colors; track $index) {
-            <button
-              class="color-swatch-btn"
-              [style.background]="c.hex"
-              [class.selected]="secondaryHex() === c.hex.toLowerCase()"
-              (click)="setSecondaryHex(c.hex)"
-              [title]="c.name"
-            >
-              <div class="selection-marker"></div>
-            </button>
-          }
-        </div>
-        <div class="current-color-info">
-          CURRENT: <span class="color-name">{{secondaryHex()}}</span>
+      <div class="list-item locked">
+        <span class="label">Secondary Emblem Color</span>
+        <div class="value-container">
+          <span class="value">Steel</span>
+          <div class="color-preview" style="background: #535353;"></div>
         </div>
       </div>
     </div>
 
-    <div class="footer-instructions">
-      <div class="instruction">
-        <span class="key-icon">A</span> SELECT COLOR
-      </div>
-      <div class="instruction">
-        <span class="key-icon">B</span> BACK
+    <!-- Footer prompts -->
+    <div class="h2-footer">
+      <div class="footer-line"></div>
+      <div class="prompt-container">
+        <div class="prompt">
+          <span class="btn-icon a">A</span> SELECT
+        </div>
+        <div class="prompt">
+          <span class="btn-icon b">B</span> DONE
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="preview-viewport">
-    <ngt-canvas [camera]="{ position: [0, 1.2, 3], fov: 45 }" shadows>
+  <!-- Spartan Model Layout -->
+  <div class="model-viewport">
+    <div class="camera-debug-hud">
+      <div class="hud-label">DEBUG_CAMERA_COORDS</div>
+      <div class="hud-values">
+        <span>X: {{cameraPos().x.toFixed(2)}}</span>
+        <span>Y: {{cameraPos().y.toFixed(2)}}</span>
+        <span>Z: {{cameraPos().z.toFixed(2)}}</span>
+      </div>
+      <div class="hud-hint">USE MOUSE TO LOOK AROUND</div>
+    </div>
+
+    <ngt-canvas [camera]="{ position: [106.62, 4.04, -33.41], fov: 40 }" shadows>
       <app-scene-component
         *canvasContent
         [primaryColor]="primaryColor()"
         [secondaryColor]="secondaryColor()"
+        (cameraChange)="onCameraChange($event)"
       />
     </ngt-canvas>
+    
+    <!-- HUD bracket around spartan foot area as seen in image -->
+    <div class="hud-bracket"></div>
   </div>
 </div>
 

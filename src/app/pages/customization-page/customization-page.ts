@@ -1,8 +1,9 @@
-import { Component, computed, effect, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, effect, signal } from "@angular/core";
 import { NgtCanvasContent } from "angular-three/dom";
 import { NgtCanvas } from "angular-three/dom";
 import { SceneComponent } from "../../shared/components/scene-component/scene-component";
-import { Color } from "three";
+import { Color, Vector3 } from "three";
+import { CommonModule } from "@angular/common";
 
 const colorPalette = [
   { name: 'White',   hex: '#FDFEFF' },
@@ -32,8 +33,9 @@ const SECONDARY_KEY = 'spartan-secondary-color';
   selector: 'app-customization-page',
   templateUrl: './customization-page.html',
   styleUrl: './customization-page.css',
-  imports: [NgtCanvasContent, NgtCanvas, SceneComponent],
+  imports: [NgtCanvasContent, NgtCanvas, SceneComponent, CommonModule],
 	host: { class: 'basic-soba' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomizationPage {
   scene?: SceneComponent;  
@@ -42,8 +44,21 @@ export class CustomizationPage {
   primaryColor = signal(new Color('#ff0000'));
   secondaryColor = signal(new Color('#00ff00'));
 
+  selectedPart = signal<'primary' | 'secondary'>('primary');
+  cameraPos = signal<Vector3>(new Vector3(0,0,0));
+
   primaryHex = computed(() => `#${this.primaryColor().getHexString()}`);
   secondaryHex = computed(() => `#${this.secondaryColor().getHexString()}`);
+
+  primaryName = computed(() => {
+    const hex = this.primaryHex().toUpperCase();
+    return colorPalette.find(c => c.hex.toUpperCase() === hex)?.name || 'Custom';
+  });
+
+  secondaryName = computed(() => {
+    const hex = this.secondaryHex().toUpperCase();
+    return colorPalette.find(c => c.hex.toUpperCase() === hex)?.name || 'Custom';
+  });
 
   ngOnInit() {
     const savedPrimary = localStorage.getItem(PRIMARY_KEY);
@@ -74,5 +89,9 @@ export class CustomizationPage {
 
   setSecondaryHex(hex: string) {
     this.secondaryColor.set(new Color(hex));
+  }
+
+  onCameraChange(pos: Vector3) {
+    this.cameraPos.set(pos.clone());
   }
 };
