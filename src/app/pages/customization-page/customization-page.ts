@@ -47,7 +47,6 @@ export class CustomizationPage {
   primaryColor = signal(new Color('#ff0000'));
   secondaryColor = signal(new Color('#00ff00'));
 
-  selectedPart = signal<'primary' | 'secondary' | null>(null);
   cameraPos = signal<Vector3>(new Vector3(0,0,0));
 
   primaryHex = computed(() => `#${this.primaryColor().getHexString()}`);

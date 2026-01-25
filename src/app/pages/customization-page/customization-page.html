@@ -6,21 +6,6 @@
   </div>
 
   <div class="ui-layout">
-    <!-- Top Card -->
-    <div class="player-card">
-      <div class="emblem-container">
-        <div class="emblem-placeholder">
-          <img src="bg-images/1600x1200/O2logo-1600.jpg" alt="Emblem" />
-        </div>
-      </div>
-      <div class="card-info">
-        <div class="username">darknight2237</div>
-        <div class="description">
-          Give your profile its own unique visual look. In team games, your primary armor color takes on your team color.
-        </div>
-      </div>
-    </div>
-
     <!-- Selection List -->
     <div class="selection-box">
       <div class="list-item locked">
@@ -28,13 +13,7 @@
         <span class="value">Spartan</span>
       </div>
 
-      <div class="list-item" 
-        [class.active]="selectedPart() === 'primary'"
-        (click)="selectedPart.set('primary')"
-      >
-        @if (selectedPart() === 'primary') {
-          <div class="selection-arrow"></div>
-        }
+      <div class="list-item">
         <span class="label">Primary Player Color</span>
         <div class="value-container">
           <span class="value">{{primaryName()}}</span>
@@ -43,31 +22,23 @@
       </div>
 
       <!-- Color Grid for Primary -->
-      @if (selectedPart() === 'primary') {
-        <div class="color-picker-subpanel">
-          <div class="color-grid">
-            @for (c of colors; track $index) {
-              <button
-                class="color-swatch-btn"
-                [style.background]="c.hex"
-                [class.selected]="primaryHex() === c.hex.toLowerCase()"
-                (click)="setPrimaryHex(c.hex)"
-                [title]="c.name"
-              >
-                <div class="selection-marker"></div>
-              </button>
-            }
-          </div>
+      <div class="color-picker-subpanel">
+        <div class="color-grid">
+          @for (c of colors; track $index) {
+            <button
+              class="color-swatch-btn"
+              [style.background]="c.hex"
+              [class.selected]="primaryHex() === c.hex.toLowerCase()"
+              (click)="setPrimaryHex(c.hex)"
+              [title]="c.name"
+            >
+              <div class="selection-marker"></div>
+            </button>
+          }
         </div>
-      }
+      </div>
 
-      <div class="list-item" 
-        [class.active]="selectedPart() === 'secondary'"
-        (click)="selectedPart.set('secondary')"
-      >
-        @if (selectedPart() === 'secondary') {
-          <div class="selection-arrow"></div>
-        }
+      <div class="list-item">
         <span class="label">Secondary Player Color</span>
         <div class="value-container">
           <span class="value">{{secondaryName()}}</span>
@@ -76,37 +47,19 @@
       </div>
 
       <!-- Color Grid for Secondary -->
-      @if (selectedPart() === 'secondary') {
-        <div class="color-picker-subpanel">
-          <div class="color-grid">
-            @for (c of colors; track $index) {
-              <button
-                class="color-swatch-btn"
-                [style.background]="c.hex"
-                [class.selected]="secondaryHex() === c.hex.toLowerCase()"
-                (click)="setSecondaryHex(c.hex)"
-                [title]="c.name"
-              >
-                <div class="selection-marker"></div>
-              </button>
-            }
-          </div>
-        </div>
-      }
-
-      <div class="list-item locked">
-        <span class="label">Primary Emblem Color</span>
-        <div class="value-container">
-          <span class="value">Orange</span>
-          <div class="color-preview" style="background: #F57A1F;"></div>
-        </div>
-      </div>
-
-      <div class="list-item locked">
-        <span class="label">Secondary Emblem Color</span>
-        <div class="value-container">
-          <span class="value">Steel</span>
-          <div class="color-preview" style="background: #535353;"></div>
+      <div class="color-picker-subpanel">
+        <div class="color-grid">
+          @for (c of colors; track $index) {
+            <button
+              class="color-swatch-btn"
+              [style.background]="c.hex"
+              [class.selected]="secondaryHex() === c.hex.toLowerCase()"
+              (click)="setSecondaryHex(c.hex)"
+              [title]="c.name"
+            >
+              <div class="selection-marker"></div>
+            </button>
+          }
         </div>
       </div>
     </div>
