@@ -5,6 +5,8 @@ import { NgtCanvas } from "angular-three/dom";
 import { SceneComponent } from "../../shared/components/scene-component/scene-component";
 import { Color, Vector3 } from "three";
 import { CommonModule } from "@angular/common";
+import { progress } from "angular-three-soba/loaders";
+import { HaloSpinner } from "../../shared/components/halo-spinner/halo-spinner";
 
 const colorPalette = [
   { name: 'White',   hex: '#FDFEFF' },
@@ -34,7 +36,7 @@ const SECONDARY_KEY = 'spartan-secondary-color';
   selector: 'app-customization-page',
   templateUrl: './customization-page.html',
   styleUrl: './customization-page.css',
-  imports: [NgtCanvasContent, NgtCanvas, SceneComponent, CommonModule],
+  imports: [NgtCanvasContent, NgtCanvas, SceneComponent, CommonModule, HaloSpinner],
 	host: { class: 'basic-soba' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -43,11 +45,16 @@ export class CustomizationPage {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
 
+  protected readonly loader = progress();
+  protected readonly displayedProgress = signal(0);
+
+
   colors = colorPalette;
   primaryColor = signal(new Color('#ff0000'));
   secondaryColor = signal(new Color('#00ff00'));
 
   cameraPos = signal<Vector3>(new Vector3(0,0,0));
+  // loadingState = progress();
 
   primaryHex = computed(() => `#${this.primaryColor().getHexString()}`);
   secondaryHex = computed(() => `#${this.secondaryColor().getHexString()}`);

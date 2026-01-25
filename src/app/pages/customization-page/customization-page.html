@@ -80,6 +80,14 @@
 
   <!-- Spartan Model Layout -->
   <div class="model-viewport">
+
+    @if (loader().active) {  
+      <div class="loading-overlay">
+        <app-halo-spinner size="64px"/>
+        <div class="loading-text">{{ loader.progress() | number: '1.0-0' }}%</div>
+      </div>
+    }
+
     <div class="camera-debug-hud">
       <div class="hud-label">DEBUG_CAMERA_COORDS</div>
       <div class="hud-values">

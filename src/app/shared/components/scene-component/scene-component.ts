@@ -39,23 +39,22 @@ import { inject, output } from '@angular/core';
 })
 export class Model implements OnInit {
 
-	protected Math = Math;
-
   /**
    * For this to work, I had to export from Blender with Data > Armature > Use Rest Position disabled.
    * The gun is then attached to the hand bone here in code instead of in Blender, and with the rest
    * position being the first frame of the animation, it stays put correctly.
    */
   protected gltf = gltfResource<GLTF>(() => '3d/spartan_idle_with_rifle_reset_rest.glb');
-
+  protected ccMask!: Texture<HTMLImageElement>;
+	protected Math = Math;
   private mixer!: AnimationMixer;
   private weaponAttached = false;
 
   // 🎨 CUSTOM COLORS
   primaryColor = input.required<Color>();
   secondaryColor = input.required<Color>();
-
-  ccMask!: Texture<HTMLImageElement>;
+  
+  loading = signal(true);
 
   ngOnInit(): void {
     this.ccMask = new TextureLoader().load('3d/masterchief_cc.png');
@@ -150,8 +149,6 @@ export class Model implements OnInit {
             mat.needsUpdate = true;
           }
 
-          console.log('updating colors', mat.userData);
-
           const uniforms = mat.userData?.['ccUniforms'];
           if (uniforms) {
             uniforms.primaryColor.value.copy(primaryColor);
@@ -169,6 +166,8 @@ export class Model implements OnInit {
           mat.needsUpdate = true;
         }
       });
+
+      // this.loading.set(false);
     });
   }
 };

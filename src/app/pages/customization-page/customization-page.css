@@ -114,13 +114,11 @@
   align-items: center;
   padding: 0.75rem 1.5rem;
   position: relative;
-  cursor: pointer;
   transition: all 0.2s ease;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .list-item.locked {
-  cursor: default;
   opacity: 0.7;
 }
 
@@ -362,3 +360,24 @@ ngt-canvas {
   font-size: 0.7rem;
 }
 
+
+/* Loading Overlay */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  backdrop-filter: blur(5px);
+  gap: 1rem;
+}
+
+.loading-text {
+  font-family: 'HaloCE', sans-serif;
+  color: #3fa2fc; /* Using hex roughly matching bungie-light-blue or defined var if I knew it */
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px rgba(63, 162, 252, 0.5);
+}
