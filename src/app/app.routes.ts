@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ButtonPage } from './pages/button-page/button-page';
+import { ComponentsPage } from './pages/components-page/components-page';
 import { HomePage } from './pages/home-page/home-page';
 import { CustomizationPage } from './pages/customization-page/customization-page';
 
@@ -22,8 +22,8 @@ export const routes: Routes = [
         component: HomePage
       },
       {
-        path: 'buttons',
-        component: ButtonPage
+        path: 'components',
+        component: ComponentsPage
       },
       {
         path: 'customization',

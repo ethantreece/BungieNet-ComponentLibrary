@@ -1,0 +1,143 @@
+<div class="showcase-container">
+  <div class="side-nav">
+    <h1 class="page-title">COMPONENTS</h1>
+    <div class="nav-links">
+      <button 
+        class="nav-item" 
+        [class.active]="selectedComponent() === 'button'"
+        (click)="selectComponent('button')"
+        aria-label="View Button component"
+      >
+        BUTTON
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="selectedComponent() === 'spinner'"
+        (click)="selectComponent('spinner')"
+        aria-label="View Spinner component"
+      >
+        SPINNER
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Button Component Showcase -->
+    @if (selectedComponent() === 'button') {
+      <!-- Basic Example -->
+      <section id="basic" class="showcase-section">
+        <div class="section-header">
+          <h2 class="section-title">PRIMARY ACTION</h2>
+          <mat-slide-toggle 
+            class="cursor-pointer"
+            (change)="toggleDefaultVisible()" 
+            [checked]="defaultVisible()" 
+            matTooltip="Toggle Component"
+          />
+        </div>
+        <div class="demo-area">
+          @if (defaultVisible()) {
+            <app-halo-forum-button text="INITIATE COMMAND" />
+          }
+        </div>
+      </section>
+
+      <!-- Size Variants -->
+      <section id="sizes" class="showcase-section">
+        <h2 class="section-title">SCALING MODULES</h2>
+        <div class="demo-area horizontal">
+          <app-halo-forum-button text="Small" size="sm"></app-halo-forum-button>
+          <app-halo-forum-button text="Medium" size="md"></app-halo-forum-button>
+          <app-halo-forum-button text="Large" size="lg"></app-halo-forum-button>
+          <app-halo-forum-button text="X-Large" size="xl"></app-halo-forum-button>
+        </div>
+      </section>
+
+      <!-- Custom Colors -->
+      <section id="colors" class="showcase-section">
+        <h2 class="section-title">COLOR PALETTES</h2>
+        <div class="demo-area wrap">
+          <app-halo-forum-button text="COBALT" baseColor="#1E90FF" outlineColor="#00BFFF"></app-halo-forum-button>
+          <app-halo-forum-button text="EMERALD" baseColor="#165b33" outlineColor="#00FF00"></app-halo-forum-button>
+          <app-halo-forum-button text="VIOLET" baseColor="#4B0082" outlineColor="#DA70D6"></app-halo-forum-button>
+          <app-halo-forum-button text="CRIMSON" baseColor="#7b1113" outlineColor="#FF6347"></app-halo-forum-button>
+          <app-halo-forum-button text="GOLD" baseColor="#b8860b" outlineColor="#FFD700" textColor="#fff"></app-halo-forum-button>
+        </div>
+      </section>
+
+      <!-- States -->
+      <section id="states" class="showcase-section">
+        <h2 class="section-title">SYSTEM STATES</h2>
+        <div class="demo-area horizontal">
+          <app-halo-forum-button text="ACTIVE SYSTEM" [disabled]="false"></app-halo-forum-button>
+          <app-halo-forum-button text="OFFLINE" [disabled]="true"></app-halo-forum-button>
+        </div>
+      </section>
+    }
+
+    <!-- Spinner Component Showcase -->
+    @if (selectedComponent() === 'spinner') {
+      <!-- Default Spinner -->
+      <section class="showcase-section">
+        <h2 class="section-title">DEFAULT SPINNER</h2>
+        <div class="demo-area">
+          <app-halo-spinner />
+        </div>
+      </section>
+
+      <!-- Spinner Sizes -->
+      <section class="showcase-section">
+        <h2 class="section-title">SIZE VARIANTS</h2>
+        <div class="demo-area horizontal wrap">
+          <div class="demo-item">
+            <app-halo-spinner size="32px" label="Small" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner size="64px" label="Medium" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner size="96px" label="Large" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner size="128px" label="X-Large" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Spinner Colors -->
+      <section class="showcase-section">
+        <h2 class="section-title">COLOR VARIANTS</h2>
+        <div class="demo-area horizontal wrap">
+          <div class="demo-item">
+            <app-halo-spinner color="var(--bungie-light-blue)" label="Blue" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner color="#00FF00" label="Green" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner color="#FF6347" label="Red" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner color="#FFD700" label="Gold" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Spinner With Labels -->
+      <section class="showcase-section">
+        <h2 class="section-title">LOADING STATES</h2>
+        <div class="demo-area horizontal wrap">
+          <div class="demo-item">
+            <app-halo-spinner label="INITIALIZING" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner label="CONNECTING" />
+          </div>
+          <div class="demo-item">
+            <app-halo-spinner label="LOADING" />
+          </div>
+        </div>
+      </section>
+    }
+  </div>
+</div>

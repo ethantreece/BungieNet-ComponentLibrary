@@ -1,0 +1,67 @@
+<div class="spinner-container">
+	<div class="spinner-wrapper">
+		<!-- Outer rotating ring -->
+		<svg
+			class="spinner-svg outer"
+			viewBox="0 0 100 100"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<circle
+				cx="50"
+				cy="50"
+				r="45"
+				fill="none"
+				stroke="var(--spinner-color)"
+				stroke-width="var(--spinner-thickness)"
+				stroke-linecap="round"
+				stroke-dasharray="70 180"
+				opacity="0.8"
+			/>
+		</svg>
+
+		<!-- Middle rotating ring (reverse direction) -->
+		<svg
+			class="spinner-svg middle"
+			viewBox="0 0 100 100"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<circle
+				cx="50"
+				cy="50"
+				r="35"
+				fill="none"
+				stroke="var(--spinner-color)"
+				stroke-width="var(--spinner-thickness)"
+				stroke-linecap="round"
+				stroke-dasharray="50 140"
+				opacity="0.6"
+			/>
+		</svg>
+
+		<!-- Inner rotating ring -->
+		<svg
+			class="spinner-svg inner"
+			viewBox="0 0 100 100"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<circle
+				cx="50"
+				cy="50"
+				r="25"
+				fill="none"
+				stroke="var(--spinner-color)"
+				stroke-width="var(--spinner-thickness)"
+				stroke-linecap="round"
+				stroke-dasharray="40 100"
+				opacity="0.4"
+			/>
+		</svg>
+
+		<!-- Center pulse indicator -->
+		<div class="center-pulse"></div>
+	</div>
+
+	@if (hasLabel()) {
+	<div class="label">{{ label() }}</div>
+	}
+</div>

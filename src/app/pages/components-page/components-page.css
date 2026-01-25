@@ -33,18 +33,30 @@
 
 .nav-item {
   color: rgba(255, 255, 255, 0.6);
+  background: none;
+  border: none;
   text-decoration: none;
   font-family: 'HaloCE', sans-serif;
   font-size: 0.8rem;
   padding: 0.75rem 1rem;
   border-left: 2px solid transparent;
   transition: all 0.2s ease;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
 }
 
 .nav-item:hover {
   color: #fff;
   background: rgba(0, 251, 255, 0.05);
   border-left-color: var(--bungie-light-blue);
+}
+
+.nav-item.active {
+  color: var(--bungie-light-blue);
+  background: rgba(0, 251, 255, 0.1);
+  border-left-color: var(--bungie-light-blue);
+  text-shadow: 0 0 8px var(--bungie-blue-glow);
 }
 
 .main-content {
@@ -95,4 +107,16 @@
 .demo-area.wrap {
   gap: 1.5rem;
   flex-wrap: wrap;
+}
+
+.demo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 200px;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--halo-border);
+  border-radius: 4px;
 }
