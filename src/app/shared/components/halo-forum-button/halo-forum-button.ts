@@ -16,7 +16,8 @@ type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
     '[attr.role]': `'button'`,
     '[attr.tabindex]': 'disabled() ? -1 : 0',
     '[attr.aria-disabled]': 'disabled()',
-    '[class.disabled]': 'disabled()'
+    '[class.disabled]': 'disabled()',
+    '[class.loading]': 'loading()'
   }
 })
 export class HaloForumButton {
@@ -26,7 +27,7 @@ export class HaloForumButton {
   // Color inputs
   baseColor = input<string>('var(--bungie-dark-blue)');
   outlineColor = input<string>('var(--bungie-light-blue)');
-  textColor = input<string>('var(--white');
+  textColor = input<string>('var(--white)');
   
   /**
    * Button size options:
@@ -41,7 +42,8 @@ export class HaloForumButton {
 
   // State inputs
   disabled = input<boolean>(false);
-  glow = input<boolean>(false);
+  loading = input<boolean>(false);
+  uppercase = input<boolean>(true);
 
   // Output for click events
   buttonClick = output<void>();
@@ -61,7 +63,7 @@ export class HaloForumButton {
 
   // Handle click event
   onClick(): void {
-    if (!this.disabled()) {
+    if (!this.disabled() && !this.loading()) {
       this.buttonClick.emit();
     }
   }

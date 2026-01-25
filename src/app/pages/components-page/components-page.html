@@ -73,6 +73,30 @@
           <app-halo-forum-button text="OFFLINE" [disabled]="true"></app-halo-forum-button>
         </div>
       </section>
+
+      <!-- Enhanced Features -->
+      <section id="enhanced" class="showcase-section">
+        <h2 class="section-title">ENHANCED CAPABILITIES</h2>
+        <div class="demo-area wrap horizontal" style="gap: 2rem; align-items: flex-start;">
+             <!-- Long Text Overflow -->
+             <div class="demo-item">
+                 <h3 style="margin-bottom: 1rem; color: var(--bungie-light-blue); font-family: 'HaloCE', sans-serif;">Adaptive Width</h3>
+                 <app-halo-forum-button text="UNSC EMERGENCY BROADCAST SYSTEM TRANSMISSION"></app-halo-forum-button>
+             </div>
+             
+             <!-- Uppercase Toggle -->
+             <div class="demo-item">
+                 <h3 style="margin-bottom: 1rem; color: var(--bungie-light-blue); font-family: 'HaloCE', sans-serif;">Case Sensitivity</h3>
+                 <app-halo-forum-button text="Mixed Case Transmission" [uppercase]="false"></app-halo-forum-button>
+             </div>
+             
+              <!-- Loading State -->
+             <div class="demo-item">
+                 <h3 style="margin-bottom: 1rem; color: var(--bungie-light-blue); font-family: 'HaloCE', sans-serif;">Processing</h3>
+                 <app-halo-forum-button text="ESTABLISHING LINK..." [loading]="true"></app-halo-forum-button>
+             </div>
+        </div>
+      </section>
     }
 
     <!-- Spinner Component Showcase -->

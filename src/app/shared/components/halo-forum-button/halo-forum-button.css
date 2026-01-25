@@ -3,147 +3,205 @@
   --edge-ratio-left: 121 / 221;
   --edge-ratio-right: 125 / 221;
   --padding-x: 2.25em;
+  --scanline-color: rgba(255, 255, 255, 0.4);
 }
 
-.height-enter-animation {
-  animation: height-slide 300ms ease-out forwards;
-}
-.height-leave-animation {
-  animation: height-slide 300ms ease-out reverse forwards;
-}
-@keyframes height-slide {
-  from {
-    max-height: 0;
-  }
-  to {
-    max-height: 100%;
-  }
-}
-
-.width-enter-animation {
-  animation: width-slide 300ms ease-out forwards;
-}
-.width-leave-animation {
-  animation: width-slide 300ms ease-out reverse forwards ;
-}
-@keyframes width-slide {
-  from {
-    max-width: 0;
-    max-height: 0;
-  }
-  to {
-    max-width: 100%;
-    max-height: 100%;
-  }
-}
-
-.label-enter-animation {
-  animation: label-reveal 300ms ease-out forwards;
-}
-.label-leave-animation {
-  animation: label-reveal 300ms ease-out reverse forwards;
-}
-@keyframes label-reveal {
-  from {
-    clip-path: inset(0 100% 0 0);
-    max-height: 0;
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-    max-height: 100%;
-  }
-}
-
-/* Button reset */
-button {
-  position: relative;
+.halo-forum-btn {
+  appearance: none;
   border: none;
-  background: none;
+  background: transparent;
   padding: 0;
-  font: inherit;
-  transition: all 0.2s ease-in-out;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  height: var(--button-height);
+  display: inline-block;
+  vertical-align: middle;
 }
 
-button:disabled,
-button.disabled {
+.halo-forum-btn:disabled,
+.halo-forum-btn.disabled {
   opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.8);
 }
 
-/* Text overlay */
-button .label {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 0 var(--padding-x);
-
-  color: var(--text-color);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  font-family: 'HaloCE', sans-serif;
+.halo-forum-btn.loading {
+  cursor: wait;
 }
 
-/* Hover polish */
-button:not(:disabled):not(.disabled):hover {
-  filter: brightness(1.15);
-}
-
-button:not(:disabled):not(.disabled):active {
-  transform: translateY(1px);
-}
-
-/* SVG container */
-.halo-button-container {
+/* Layout */
+.halo-btn-layout {
   display: inline-flex;
   align-items: stretch;
-  height: var(--button-height);
-  min-width: 180px;
-}
-
-/* Shared SVG rules */
-.halo-button-container svg {
   height: 100%;
-  display: block;
-  width: auto;
+  position: relative;
+  transition: filter 0.2s ease, transform 0.1s ease;
 }
 
-/* Left edge */
-.halo-button-container .left {
-  aspect-ratio: var(--edge-ratio-left);
+/* Caps (Left/Right) */
+.cap {
   flex: 0 0 auto;
+  height: 100%;
+  display: flex;
+  position: relative;
 }
 
-/* Middle stretch section */
-.halo-button-container .middle {
-  flex: 1 1 auto;
+.left-cap {
+  aspect-ratio: var(--edge-ratio-left);
+}
+
+.right-cap {
+  aspect-ratio: var(--edge-ratio-right);
+  margin-left: -1px;
+}
+
+.cap-svg {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+/* Middle Section */
+.middle-section {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   min-width: 40px;
   margin-left: -1px;
 }
 
-/* Right edge */
-.halo-button-container .right {
-  aspect-ratio: var(--edge-ratio-right);
-  flex: 0 0 auto;
-  margin-left: -1px;
+/* SVG Background */
+.middle-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
-/* Size variants - scale button based on size prop */
-app-halo-forum-button[size="sm"] .halo-button-container svg {
-  transform: scaleY(0.75);
-  transform-origin: center;
+/* Content Text */
+.label-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 var(--padding-x);
+  font-family: 'HaloCE', sans-serif;
+  color: var(--text-color);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  
+  /* Text Shadow for better legibility */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-app-halo-forum-button[size="lg"] .halo-button-container svg {
-  transform: scaleY(1.25);
-  transform-origin: center;
+/* Interactive Effects */
+
+/* Hover */
+.halo-forum-btn:not(:disabled):hover .halo-btn-layout {
+  filter: brightness(1.2) drop-shadow(0 0 8px var(--outline-color));
 }
 
-app-halo-forum-button[size="xl"] .halo-button-container svg {
-  transform: scaleY(1.5);
-  transform-origin: center;
+.halo-forum-btn:not(:disabled):hover .label-content {
+  text-shadow: 0 0 10px var(--outline-color);
 }
+
+/* Active Press */
+.halo-forum-btn:not(:disabled):active .halo-btn-layout {
+  transform: translateY(2px) scale(0.98);
+  filter: brightness(0.9);
+}
+
+/* Scanline Effect - Global Unified Layer */
+.scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 3; /* Above text (z-index 2) */
+  pointer-events: none;
+  mix-blend-mode: overlay;
+
+  /* Calculate exact widths of the caps based on height and aspect ratio */
+  --w-l: calc(var(--button-height) * 121 / 221);
+  --w-r: calc(var(--button-height) * 125 / 221);
+
+  /* Composite Mask containing all 3 shapes */
+  -webkit-mask-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 121 221' preserveAspectRatio='none'%3E%3Cpolygon points='121,185 121,37 99,37 64,72 64,146 103,185 121,185' fill='black'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 424 221' preserveAspectRatio='none'%3E%3Cpolygon points='0,185 0,37 209,36 227,55 327,55 345,37 424,36 424,185 184,185 169,170 80,170 66,185 0,185' fill='black'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 125 221' preserveAspectRatio='none'%3E%3Cpolygon points='0,185 0,37 8,37 54,82 54,133 60,127 70,138 66,138 21,185 0,185' fill='black'/%3E%3C/svg%3E");
+  
+  mask-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 121 221' preserveAspectRatio='none'%3E%3Cpolygon points='121,185 121,37 99,37 64,72 64,146 103,185 121,185' fill='black'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 424 221' preserveAspectRatio='none'%3E%3Cpolygon points='0,185 0,37 209,36 227,55 327,55 345,37 424,36 424,185 184,185 169,170 80,170 66,185 0,185' fill='black'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 125 221' preserveAspectRatio='none'%3E%3Cpolygon points='0,185 0,37 8,37 54,82 54,133 60,127 70,138 66,138 21,185 0,185' fill='black'/%3E%3C/svg%3E");
+
+  -webkit-mask-size: 
+    var(--w-l) 100%, 
+    calc(100% - var(--w-l) - var(--w-r) + 2px) 100%, 
+    var(--w-r) 100%;
+    
+  mask-size: 
+    var(--w-l) 100%, 
+    calc(100% - var(--w-l) - var(--w-r) + 2px) 100%, 
+    var(--w-r) 100%;
+
+  -webkit-mask-position: 
+    left top, 
+    calc(var(--w-l) - 1px) 0, 
+    right top;
+    
+  mask-position: 
+    left top, 
+    calc(var(--w-l) - 1px) 0, 
+    right top;
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Moving Light Beam - Now spans the entire button */
+.scanline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 300px; /* Much wider beam for smoother sweep */
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 20%, 
+    rgba(255, 255, 255, 0.5) 50%, 
+    rgba(255, 255, 255, 0.1) 80%, 
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0;
+  left: -100%;
+}
+
+.halo-forum-btn:not(:disabled):hover .scanline::before {
+  animation: scan 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+}
+
+@keyframes scan {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 200%;
+    opacity: 0;
+  }
+}
+
+/* Size Variants Adjustments (Optional if needed) */
+/* Currently handled by --button-height logic in TS */
