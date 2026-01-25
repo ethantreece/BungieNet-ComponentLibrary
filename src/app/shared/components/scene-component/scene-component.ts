@@ -70,6 +70,10 @@ export class Model implements OnInit {
     });
 
     effect(() => {
+      // Read color signals first to ensure they're tracked as dependencies
+      const primaryColor = this.primaryColor();
+      const secondaryColor = this.secondaryColor();
+
       const scene = this.gltf.scene();
       if (!scene || !this.ccMask) return;
 
@@ -111,8 +115,8 @@ export class Model implements OnInit {
             (mat as any).__ccPatched = true;
 
             mat.onBeforeCompile = shader => {
-              shader.uniforms['primaryColor'] = { value: this.primaryColor() };
-              shader.uniforms['secondaryColor'] = { value: this.secondaryColor() };
+              shader.uniforms['primaryColor'] = { value: primaryColor };
+              shader.uniforms['secondaryColor'] = { value: secondaryColor };
               shader.uniforms['ccMask'] = { value: this.ccMask };
 
               mat.userData['ccUniforms'] = shader.uniforms;
@@ -145,10 +149,12 @@ export class Model implements OnInit {
             mat.needsUpdate = true;
           }
 
+          console.log('updating colors', mat.userData);
+
           const uniforms = mat.userData?.['ccUniforms'];
           if (uniforms) {
-            uniforms.primaryColor.value.copy(this.primaryColor());
-            uniforms.secondaryColor.value.copy(this.secondaryColor());
+            uniforms.primaryColor.value.copy(primaryColor);
+            uniforms.secondaryColor.value.copy(secondaryColor);
           }
         }
         // VISOR MATERIAL
@@ -163,41 +169,6 @@ export class Model implements OnInit {
         }
       });
     });
-  }
-
-
-  addColors(shader: WebGLProgramParametersWithUniforms, ccMask: Texture<HTMLImageElement>): void {
-    // Uniforms
-    shader.uniforms['primaryColor'] = { value: this.primaryColor() };
-    shader.uniforms['secondaryColor'] = { value: this.secondaryColor() };
-    shader.uniforms['ccMask'] = { value: ccMask };
-
-    // Declare uniforms
-    shader.fragmentShader = shader.fragmentShader.replace(
-      '#include <common>',
-      `
-      #include <common>
-
-      uniform vec3 primaryColor;
-      uniform vec3 secondaryColor;
-      uniform sampler2D ccMask;
-      `
-    );
-
-    // Apply CC logic using Three.js UVs
-    shader.fragmentShader = shader.fragmentShader.replace(
-      '#include <map_fragment>',
-      `
-      #include <map_fragment>
-
-      vec4 mask = texture(ccMask, vMapUv);
-
-      diffuseColor.rgb *=
-        mask.r * primaryColor +
-        mask.g * secondaryColor +
-        mask.b;
-      `
-    );
   }
 };
 

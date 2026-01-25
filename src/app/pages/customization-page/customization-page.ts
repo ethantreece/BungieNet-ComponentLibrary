@@ -63,22 +63,21 @@ export class CustomizationPage {
     return colorPalette.find(c => c.hex.toUpperCase() === hex)?.name || 'Custom';
   });
 
-  ngOnInit() {
-    if (!this.isBrowser) return;
-
-    const savedPrimary = localStorage.getItem(PRIMARY_KEY);
-    const savedSecondary = localStorage.getItem(SECONDARY_KEY);
-
-    if (savedPrimary) {
-      this.primaryColor.set(new Color(savedPrimary));
-    }
-
-    if (savedSecondary) {
-      this.secondaryColor.set(new Color(savedSecondary));
-    }
-  }
-
   constructor() {
+    // Load colors from localStorage before effects run
+    if (this.isBrowser) {
+      const savedPrimary = localStorage.getItem(PRIMARY_KEY);
+      const savedSecondary = localStorage.getItem(SECONDARY_KEY);
+
+      if (savedPrimary) {
+        this.primaryColor.set(new Color(savedPrimary));
+      }
+
+      if (savedSecondary) {
+        this.secondaryColor.set(new Color(savedSecondary));
+      }
+    }
+
     effect(() => {
       if (this.isBrowser) {
         localStorage.setItem(PRIMARY_KEY, this.primaryHex());
