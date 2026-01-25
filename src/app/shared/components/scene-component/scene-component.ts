@@ -29,11 +29,12 @@ import { inject, output } from '@angular/core';
 @Component({
   selector: 'app-model',
   template: `
-    <ngts-center>
+    <ngt-group [position]="[0, -33, 0]">
       <ngt-primitive *args="[gltf.scene()]" />
-    </ngts-center>
+    </ngt-group>
   `,
-  imports: [NgtArgs, NgtsCenter],  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [NgtArgs],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Model implements OnInit {
