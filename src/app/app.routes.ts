@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ComponentsPage } from './pages/components-page/components-page';
 import { HomePage } from './pages/home-page/home-page';
 import { CustomizationPage } from './pages/customization-page/customization-page';
+import { H3CustomizationPage } from './pages/h3-customization-page/h3-customization-page';
 
 export const routes: Routes = [
   {
@@ -26,8 +27,12 @@ export const routes: Routes = [
         component: ComponentsPage
       },
       {
-        path: 'customization',
+        path: 'h2-customization',
         component: CustomizationPage
+      },
+      {
+        path: 'h3-customization',
+        component: H3CustomizationPage
       },
     ]
   },

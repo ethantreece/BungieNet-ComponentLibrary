@@ -1,0 +1,97 @@
+<div class="menu-header">
+  <div class="menu-title">CUSTOMIZATION</div>
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab() === 'ARMORY'" (click)="activeTab.set('ARMORY')">ARMORY</button>
+    <button class="tab-btn" [class.active]="activeTab() === 'COLORS'" (click)="activeTab.set('COLORS')">COLORS</button>
+    <button class="tab-btn" [class.active]="activeTab() === 'EMBLEM'" (click)="activeTab.set('EMBLEM')">EMBLEM</button>
+  </div>
+</div>
+
+<div class="menu-content">
+  <!-- LEFT SIDEBAR: CATEGORIES based on Tab -->
+  <div class="categories-list">
+    
+    @if (activeTab() === 'ARMORY') {
+      <button class="category-btn" [class.active]="activeArmorCategory() === 'HELMET'" (click)="activeArmorCategory.set('HELMET')">HELMET</button>
+      <button class="category-btn" [class.active]="activeArmorCategory() === 'RIGHT_SHOULDER'" (click)="activeArmorCategory.set('RIGHT_SHOULDER')">RIGHT SHOULDER</button>
+      <button class="category-btn" [class.active]="activeArmorCategory() === 'LEFT_SHOULDER'" (click)="activeArmorCategory.set('LEFT_SHOULDER')">LEFT SHOULDER</button>
+      <button class="category-btn" [class.active]="activeArmorCategory() === 'BODY'" (click)="activeArmorCategory.set('BODY')">CHEST</button>
+      
+      <div class="separator"></div>
+      <!-- Placeholder -->
+
+      <!-- Description Box at bottom of sidebar -->
+       <div class="description-box">
+         <div class="desc-title">{{ selectedArmorName() }}</div>
+         <div class="desc-text">
+           {{ getArmorDescription(selectedArmorName()) }}
+         </div>
+       </div>
+    }
+
+    @if (activeTab() === 'COLORS') {
+      <button class="category-btn" [class.active]="activeColorCategory() === 'PRIMARY'" (click)="activeColorCategory.set('PRIMARY')">ARMOR PRIMARY</button>
+      <button class="category-btn" [class.active]="activeColorCategory() === 'SECONDARY'" (click)="activeColorCategory.set('SECONDARY')">ARMOR SECONDARY</button>
+      <button class="category-btn" [class.active]="activeColorCategory() === 'TERTIARY'" (click)="activeColorCategory.set('TERTIARY')">ARMOR DETAIL</button>
+      <div class="separator"></div>
+      <div class="description-box">
+        <div class="desc-title">{{ selectedColorName() }}</div>
+        <div class="desc-text">
+          Customize your Spartan's armor colors.
+        </div>
+      </div>
+    }
+
+    @if (activeTab() === 'EMBLEM') {
+       <button class="category-btn active">EMBLEM CONFIG</button>
+       <!-- Placeholder -->
+        <div class="description-box">
+         <div class="desc-title">EMBLEM</div>
+         <div class="desc-text">
+           Comming Soon.
+         </div>
+       </div>
+    }
+
+  </div>
+
+  <!-- RIGHT PANEL: OPTIONS GRID -->
+  <div class="options-panel">
+    
+    @if (activeTab() === 'ARMORY') {
+      <div class="options-grid">
+        <!-- Render armor options based on selected category -->
+        @for (item of currentArmorOptions(); track item.id) {
+          <div 
+            class="option-card" 
+            [class.selected]="isArmorSelected(item.id)"
+            (click)="selectArmor(item.id)">
+            
+            <div class="option-image">
+             <!-- Placeholder for armor icon/image. Using text or generic icon for now -->
+             <!-- Ideally we'd have images like assets/ui/icons/helmets/eva.png -->
+             <span style="font-size: 2rem; opacity: 0.5;">🛡️</span>
+            </div>
+            <div class="option-name">{{ item.name }}</div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (activeTab() === 'COLORS') {
+      <div class="colors-grid">
+        @for (c of colors; track c.hex) {
+          <button
+            class="color-swatch-btn"
+            [style.background-color]="c.hex"
+            [class.selected]="isColorSelected(c.hex)"
+            (click)="selectColor(c.hex)"
+            [title]="c.name"
+          >
+          </button>
+        }
+      </div>
+    }
+
+  </div>
+</div>

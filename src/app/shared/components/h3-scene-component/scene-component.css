@@ -1,0 +1,22 @@
+.ui {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.75);
+  padding: 12px;
+  color: white;
+  font-size: 12px;
+  width: 240px;
+  z-index: 10;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0;
+}
+
+input[type="range"] {
+  width: 120px;
+}

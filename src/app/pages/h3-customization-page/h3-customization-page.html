@@ -1,0 +1,68 @@
+<div class="customization-container">
+  <!-- Background patterns -->
+  <div class="h2-bg-overlay">
+    <div class="technical-text top">04:40 &nbsp;&nbsp; 04:42 &nbsp;&nbsp; 04:44 &nbsp;&nbsp; 04:46 &nbsp;&nbsp; 04:48 &nbsp;&nbsp; 04:50 &nbsp;&nbsp; 04:52 &nbsp;&nbsp; 04:54</div>
+    <div class="scanlines"></div>
+  </div>
+
+  <div class="ui-layout">
+    <app-customization-menu
+      [helmet]="helmet()"
+      [leftShoulder]="leftShoulder()"
+      [rightShoulder]="rightShoulder()"
+      [body]="body()"
+      [primaryHex]="primaryHex()"
+      [secondaryHex]="secondaryHex()"
+      [tertiaryHex]="tertiaryHex()"
+      
+      (helmetChange)="helmet.set($event)"
+      (leftShoulderChange)="leftShoulder.set($event)"
+      (rightShoulderChange)="rightShoulder.set($event)"
+      (bodyChange)="body.set($event)"
+      (primaryHexChange)="setPrimaryHex($event)"
+      (secondaryHexChange)="setSecondaryHex($event)"
+      (tertiaryHexChange)="setTertiaryHex($event)"
+    ></app-customization-menu>
+  </div>
+
+  <!-- Spartan Model Layout -->
+  <div class="model-viewport">
+
+    @if (loader().active) {  
+      <div class="loading-overlay">
+        <app-halo-spinner size="64px"/>
+        <div class="loading-text">{{ loader.progress() | number: '1.0-0' }}%</div>
+      </div>
+    }
+
+    <div class="camera-debug-hud">
+      <div class="hud-label">DEBUG_CAMERA_COORDS</div>
+      <div class="hud-values">
+        <span>X: {{cameraPos().x.toFixed(2)}}</span>
+        <span>Y: {{cameraPos().y.toFixed(2)}}</span>
+        <span>Z: {{cameraPos().z.toFixed(2)}}</span>
+      </div>
+      <div class="hud-hint">USE MOUSE TO LOOK AROUND</div>
+    </div>
+
+    <ngt-canvas [camera]="{ position: [99.04, 11.72, 50.89], fov: 40 }" shadows>
+      <app-h3-scene-component
+        *canvasContent
+        [primaryColor]="primaryColor()"
+        [secondaryColor]="secondaryColor()"
+        [tertiaryColor]="tertiaryColor()"
+        [helmet]="helmet()"
+        [leftShoulder]="leftShoulder()"
+        [rightShoulder]="rightShoulder()"
+        [body]="body()"
+        [weaponRotX]="weaponRotX()"
+        [weaponRotY]="weaponRotY()"
+        [weaponRotZ]="weaponRotZ()"
+        (cameraChange)="onCameraChange($event)"
+      />
+    </ngt-canvas>
+
+    <!-- HUD bracket around spartan foot area as seen in image -->
+    <div class="hud-bracket"></div>
+  </div>
+</div>
